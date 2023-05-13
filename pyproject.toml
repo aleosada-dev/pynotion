@@ -31,3 +31,6 @@ dev = [
 ]
 [tool.pyright]
 extraPaths = ["__pypackages__/3.11/lib/"]
+
+[tool.pytest.ini_options]
+testpaths = [ "src/tests"]
