@@ -1,6 +1,6 @@
 [project]
 name = "pynotion"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = [
     {name = "Alexandre Osada", email = "alexandre.osada.dev@gmail.com"},
@@ -29,6 +29,7 @@ dev = [
     "pylint>=2.17.4",
     "pyright>=1.1.308",
 ]
+
 [tool.pyright]
 extraPaths = ["__pypackages__/3.11/lib/"]
 

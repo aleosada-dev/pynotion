@@ -136,7 +136,7 @@ def _log_headers(headers: dict) -> dict:
     return {key: value for key, value in headers.items() if key != "Authorization"}
 
 
-def build_headers() -> dict:
+def build_headers(api_key: str | None = None) -> dict:
     """Build basic headers for requests with api key
     :return: A dictionary for the headers authorization notion-version
     and content-type
@@ -144,7 +144,7 @@ def build_headers() -> dict:
     logger.debug(f"Starting {build_headers.__name__}")
 
     headers = {
-        "Authorization": f"Bearer {NOTION_API_KEY}",
+        "Authorization": f"Bearer {api_key or NOTION_API_KEY}",
         "Notion-Version": NOTION_VERSION,
         "Content-Type": "application/json",
     }
@@ -170,7 +170,7 @@ def build_url(route: str) -> str:
 
 
 def query_notion_database(
-    database_id: str, filter: dict = {}, sorter: dict = {}
+    database_id: str, filter: dict = {}, sorter: dict = {}, api_key: str | None = None
 ) -> requests.Response:
     """Query a notion database
     :param database_id: Id of notion database
@@ -184,7 +184,7 @@ def query_notion_database(
     if not database_id:
         raise ValueError(database_id)
 
-    headers = build_headers()
+    headers = build_headers(api_key)
     payload = filter | sorter
     databases_api_url = build_url(f"databases/{database_id}/query")
 
@@ -204,7 +204,7 @@ def query_notion_database(
 
 
 def update_notion_page(
-    page_id: str, properties: list[NotionPageProperty]
+    page_id: str, properties: list[NotionPageProperty], api_key: str | None = None
 ) -> requests.Response:
     """Update a page entry in notion
     :param page_id: Id of the page to update
@@ -217,7 +217,7 @@ def update_notion_page(
 
     url = build_url(f"pages/{page_id}")
     payload = build_update_properties(properties)
-    headers = build_headers()
+    headers = build_headers(api_key)
 
     logger.info(
         f"Calling (PATCH) {url}", {"data": payload, "headers": _log_headers(headers)}
